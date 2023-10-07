@@ -1,0 +1,5 @@
+flutter_launcher_icons:
+  image_path: assets/logo/flutter_social_icons.png
+  android: true
+  ios: true
+  remove_alpha_ios: true

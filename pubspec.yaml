@@ -86,11 +86,7 @@ flutter_gen:
     rive: false
   line_length: 80
 
-flutter_icons:
-  image_path: assets/logo/flutter_social_icons.png
-  android: true
-  ios: true
-  remove_alpha_ios: true
+
 
 # Flavor configuration
 flavorizr:
