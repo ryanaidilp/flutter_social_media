@@ -1,0 +1,9 @@
+{
+    "name": "Flutter Social",
+    "prefix": "fs",
+    "usingFirebase": false,
+    "usingLocation": false,
+    "usingUiKit": false,
+    "organization": "Banua Coder",
+    "description": "Flutter social app"
+}
