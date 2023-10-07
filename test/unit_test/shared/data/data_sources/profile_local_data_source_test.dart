@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_social/core/constants/storage_constant.dart';
 import 'package:flutter_social/core/local_storage/local_storage.dart';
 import 'package:flutter_social/shared/data/data_sources/profile_local_data_source.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
-import 'package:flutter_social/shared/domain/entities/profile.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/test_injection.dart';
@@ -212,9 +211,9 @@ void main() {
       group(
         'saveProfile',
         () {
-          final Profile profile = ProfileModel.fromJson(
+          final profile = ProfileModel.fromJson(
             jsonFromFixture('profile_fixture.json'),
-          );
+          ).toEntity();
 
           final json = ProfileModel.fromEntity(profile).toJson();
 

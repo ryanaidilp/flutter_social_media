@@ -7,6 +7,8 @@ analyzer:
   errors:
     invalid_annotation_target: false
     one_member_abstracts: false
+    inference_failure_on_instance_creation: false
+    inference_failure_on_function_invocation: false
   exclude:
     - "build/**"
     - "**/*.config.dart"

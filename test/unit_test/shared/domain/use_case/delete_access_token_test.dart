@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_social/core/failures/failures.dart';
 import 'package:flutter_social/core/use_case/use_case.dart';
 import 'package:flutter_social/shared/domain/repositories/access_token_repository.dart';
 import 'package:flutter_social/shared/domain/use_case/delete_access_token.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../helpers/test_injection.dart';
 

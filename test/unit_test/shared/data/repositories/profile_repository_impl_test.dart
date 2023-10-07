@@ -33,18 +33,13 @@ void main() {
       registerTestLazySingleton<ProfileLocalDataSource>(mockLocalDataSource);
       registerTestLazySingleton<ProfileRemoteDataSource>(mockRemoteDataSource);
       repository = ProfileRepositoryImpl();
-      profile = ProfileModel.fromJson(jsonFromFixture('profile_fixture.json'));
+      profile = ProfileModel.fromJson(jsonFromFixture('profile_fixture.json'))
+          .toEntity();
       newProfile = ProfileModel(
         id: profile.id,
         name: profile.name,
-        isEmailVerified: true,
-        isPhoneVerified: true,
-        gender: profile.gender,
-        avatar: profile.avatar,
-        phoneNumber: profile.phoneNumber,
-        dateOfBirth: profile.dateOfBirth,
-        suspendedUntil: profile.suspendedUntil,
-        updatedAt: profile.updatedAt,
+        email: 'newemail@mail.com',
+        username: 'newusername',
       );
     },
   );
@@ -113,7 +108,7 @@ void main() {
             () async {
               when(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).thenAnswer((_) async => true);
 
@@ -122,7 +117,7 @@ void main() {
               expect(result, const Right(true));
               verify(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).called(1);
             },
@@ -133,7 +128,7 @@ void main() {
             () async {
               when(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).thenAnswer((_) async => false);
 
@@ -142,7 +137,7 @@ void main() {
               expect(result, const Right(false));
               verify(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).called(1);
             },
@@ -153,7 +148,7 @@ void main() {
             () async {
               when(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).thenThrow(Exception());
 
@@ -162,7 +157,7 @@ void main() {
               expect(result, Left(ClientFailure()));
               verify(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).called(1);
             },
@@ -271,7 +266,7 @@ void main() {
               );
               when(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).thenAnswer(
                 (_) async => true,
@@ -297,7 +292,7 @@ void main() {
               ).called(1);
               verify(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).called(1);
             },
@@ -333,7 +328,7 @@ void main() {
               );
               when(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               ).thenAnswer(
                 (_) async => true,
@@ -359,7 +354,7 @@ void main() {
               );
               verifyNever(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(profile),
+                  profile,
                 ),
               );
             },
@@ -395,7 +390,7 @@ void main() {
               );
               when(
                 () => mockLocalDataSource.saveProfile(
-                  newProfile,
+                  newProfile.toEntity(),
                 ),
               ).thenAnswer(
                 (_) async => true,
@@ -421,7 +416,7 @@ void main() {
               ).called(1);
               verify(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(newProfile),
+                  newProfile.toEntity(),
                 ),
               ).called(1);
             },
@@ -457,7 +452,7 @@ void main() {
               );
               when(
                 () => mockLocalDataSource.saveProfile(
-                  newProfile,
+                  newProfile.toEntity(),
                 ),
               ).thenAnswer(
                 (_) async => true,
@@ -483,7 +478,7 @@ void main() {
               ).called(1);
               verify(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(newProfile),
+                  newProfile.toEntity(),
                 ),
               ).called(1);
             },
@@ -517,7 +512,7 @@ void main() {
               );
               when(
                 () => mockLocalDataSource.saveProfile(
-                  newProfile,
+                  newProfile.toEntity(),
                 ),
               ).thenAnswer(
                 (_) async => true,
@@ -543,7 +538,7 @@ void main() {
               );
               verifyNever(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(newProfile),
+                  newProfile.toEntity(),
                 ),
               );
             },
@@ -575,7 +570,7 @@ void main() {
               );
               when(
                 () => mockLocalDataSource.saveProfile(
-                  newProfile,
+                  newProfile.toEntity(),
                 ),
               ).thenAnswer(
                 (_) async => true,
@@ -601,7 +596,7 @@ void main() {
               );
               verifyNever(
                 () => mockLocalDataSource.saveProfile(
-                  ProfileModel.fromEntity(newProfile),
+                  newProfile.toEntity(),
                 ),
               );
             },

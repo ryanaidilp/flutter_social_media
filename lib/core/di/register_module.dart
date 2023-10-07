@@ -1,5 +1,8 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_social/config/env.dart';
+import 'package:flutter_social/core/di/service_locator.dart';
+import 'package:flutter_social/core/use_case/use_case.dart';
+import 'package:flutter_social/shared/domain/use_case/get_access_token.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
@@ -47,4 +50,26 @@ abstract class RegisterModule {
         link: HttpLink('${Env.apiBaseUrl}/graphql'),
         cache: GraphQLCache(),
       );
+
+  @preResolve
+  @Named('authGraphQLClient')
+  Future<GraphQLClient> get authGraphQLClient async {
+    final result = await getIt<GetAccessToken>().call(NoParams());
+
+    final token = result.fold(
+      (l) => '',
+      (r) => r,
+    );
+
+    return GraphQLClient(
+      link: HttpLink(
+        '${Env.apiBaseUrl}/graphql',
+        defaultHeaders: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      ),
+      cache: GraphQLCache(),
+    );
+  }
 }

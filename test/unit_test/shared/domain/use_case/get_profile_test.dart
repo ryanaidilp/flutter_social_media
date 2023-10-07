@@ -24,7 +24,7 @@ void main() {
       registerTestLazySingleton<ProfileRepository>(mockRepository);
       usecase = GetProfile();
       final json = jsonFromFixture('profile_fixture.json');
-      profile = ProfileModel.fromJson(json);
+      profile = ProfileModel.fromJson(json).toEntity();
     },
   );
 

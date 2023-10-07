@@ -1,13 +1,8 @@
-import 'package:injectable/injectable.dart';
-
-import 'package:flutter_social/core/constants/json_constant.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
-import 'package:flutter_social/core/network/api_endpoint.dart';
-import 'package:flutter_social/core/network/http/modules/flutter_social_http_module.dart';
-
-import 'package:flutter_social/shared/data/dtos/profile_dto.dart';
-import 'package:flutter_social/shared/data/mapper/profile_mapper.dart';
+import 'package:flutter_social/core/extension/typedef.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:injectable/injectable.dart';
 
 abstract class ProfileRemoteDataSource {
   Future<ProfileModel> getProfile();
@@ -15,17 +10,34 @@ abstract class ProfileRemoteDataSource {
 
 @LazySingleton(as: ProfileRemoteDataSource)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
-  final _httpClient = getIt<FlutterSocialHttpModule>();
+  final _graphQlClient = getIt<GraphQLClient>(
+    instanceName: 'authGraphQLClient',
+  );
 
   @override
   Future<ProfileModel> getProfile() async {
-    final response = await _httpClient.get(ApiEndpoint.baseUrl);
+    final result = await _graphQlClient.query(
+      QueryOptions(
+        document: gql('''
+          query {
+            profile{
+              id
+              name
+              email
+              photo
+              username
+            }
+          }
+        '''),
+        errorPolicy: ErrorPolicy.all,
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
 
-    if(response.containsKey(JsonConstant.attributes)) {
-      final profileDto = ProfileDto.fromJson(response); 
-      return ProfileMapper.fromDto(profileDto);
+    if (result.hasException) {
+      throw Exception(result.exception);
     }
 
-    return ProfileModel.fromJson(response);
+    return ProfileModel.fromJson(result.data?['profile'] as JSON);
   }
 }
