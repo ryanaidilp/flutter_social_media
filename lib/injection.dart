@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 
 import 'package:flutter_social/core/media_store/media_store.dart';
-import 'package:flutter_social/features/splash/presentation/bloc/user_bloc.dart';
+import 'package:flutter_social/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_social/shared/data/data_sources/access_token_local_data_source.dart';
 import 'package:flutter_social/shared/data/data_sources/profile_local_data_source.dart';
 import 'package:flutter_social/shared/data/data_sources/profile_remote_data_source.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_social/shared/data/repositories/access_token_repository_
 import 'package:flutter_social/shared/data/repositories/profile_repository_impl.dart';
 import 'package:flutter_social/shared/domain/repositories/access_token_repository.dart';
 import 'package:flutter_social/shared/domain/repositories/profile_repository.dart';
+import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
 
 class Injection {
   Injection._();
@@ -36,9 +37,14 @@ class Injection {
 
   // Bloc
   List<BlocProvider> initBloc() => [
-        BlocProvider(
-          create: (context) => getIt<UserBloc>(),
-          lazy: false,
+        BlocProvider<AppDataBloc>(
+          create: (context) => getIt<AppDataBloc>()
+            ..add(
+              const AppDataEvent.checkIfAuthenticated(),
+            ),
+        ),
+        BlocProvider<AuthBloc>(
+          create: (context) => getIt<AuthBloc>(),
         ),
       ];
 

@@ -18,53 +18,6 @@ void main() {
       );
 
       test(
-        'date_of_birth will be parsed to DateTime if present in json',
-        () {
-          final profile = ProfileModel.fromJson(
-            {
-              ...jsonFromFixture('profile_fixture.json'),
-              ...{'date_of_birth': '2001-02-02'},
-            },
-          );
-          expect(profile.dateOfBirth, DateTime(2001, 2, 2));
-        },
-      );
-
-      test(
-        'suspended_until will be parsed to DateTime if present in json',
-        () {
-          final suspendedUntil = DateTime.now().add(const Duration(days: 5));
-          final profile = ProfileModel.fromJson(
-            {
-              ...jsonFromFixture('profile_fixture.json'),
-              ...{'suspended_until': suspendedUntil.toString()},
-            },
-          );
-          expect(
-            profile.suspendedUntil,
-            suspendedUntil,
-          );
-        },
-      );
-
-      test(
-        'updated_at will be parsed to DateTime if present in json',
-        () {
-          final updatedAt = DateTime.now();
-          final profile = ProfileModel.fromJson(
-            {
-              ...jsonFromFixture('profile_fixture.json'),
-              ...{'updated_at': updatedAt.toString()},
-            },
-          );
-          expect(
-            profile.updatedAt,
-            updatedAt,
-          );
-        },
-      );
-
-      test(
         'toJson will be parsed to json',
         () {
           final json = jsonFromFixture('profile_fixture.json');

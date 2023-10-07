@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_social/core/failures/failures.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
 import 'package:flutter_social/shared/domain/entities/profile.dart';
 import 'package:flutter_social/shared/domain/repositories/profile_repository.dart';
 import 'package:flutter_social/shared/domain/use_case/save_profile.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/test_injection.dart';
@@ -23,7 +23,7 @@ void main() {
       registerTestLazySingleton<ProfileRepository>(mockRepository);
       usecase = SaveProfile();
       final json = jsonFromFixture('profile_fixture.json');
-      profile = ProfileModel.fromJson(json);
+      profile = ProfileModel.fromJson(json).toEntity();
     },
   );
 

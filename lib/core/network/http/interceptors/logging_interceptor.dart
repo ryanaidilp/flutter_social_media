@@ -9,14 +9,13 @@ class LoggingInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    log.console('HTTP REQUEST');
-    log.console('==============================');
-
-    log.console(
-      '${options.method.toUpperCase()} ${(options.baseUrl) + options.path}',
-    );
-
-    log.console('Headers:');
+    log
+      ..console('HTTP REQUEST')
+      ..console('==============================')
+      ..console(
+        '${options.method.toUpperCase()} ${(options.baseUrl) + options.path}',
+      )
+      ..console('Headers:');
     options.headers.forEach(
       (k, v) => log.console('$k: $v'),
     );
@@ -34,8 +33,8 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  Future onResponse(
-    Response response,
+  Future<dynamic> onResponse(
+    Response<dynamic> response,
     ResponseInterceptorHandler handler,
   ) async {
     await log.console('HTTP RESPONSE');
@@ -57,7 +56,10 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  Future onError(DioException err, ErrorInterceptorHandler handler) async {
+  Future<dynamic> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
     await log.console(
       'HTTP ERROR',
       type: LogType.error,

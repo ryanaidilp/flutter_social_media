@@ -21,7 +21,7 @@ class FSRouteObserver extends AutoRouteObserver {
   }
 
   @override
-  void didPop(Route route, Route? previousRoute) {
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     dev.log(
       'Pop: ${route.settings.name}; from: ${previousRoute?.settings.name}',
       name: 'NavigationObserver',
@@ -29,7 +29,7 @@ class FSRouteObserver extends AutoRouteObserver {
   }
 
   @override
-  void didPush(Route route, Route? previousRoute) {
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     dev.log(
       'Push: ${route.settings.name}; from: ${previousRoute?.settings.name}',
       name: 'NavigationObserver',
@@ -37,7 +37,7 @@ class FSRouteObserver extends AutoRouteObserver {
   }
 
   @override
-  void didRemove(Route route, Route? previousRoute) {
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     dev.log(
       'Remove: ${route.settings.name}; from: ${previousRoute?.settings.name}',
       name: 'NavigationObserver',
@@ -45,7 +45,7 @@ class FSRouteObserver extends AutoRouteObserver {
   }
 
   @override
-  void didReplace({Route? newRoute, Route? oldRoute}) {
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
     dev.log(
       'Replace: ${newRoute?.settings.name}; from: ${oldRoute?.settings.name}',
       name: 'NavigationObserver',

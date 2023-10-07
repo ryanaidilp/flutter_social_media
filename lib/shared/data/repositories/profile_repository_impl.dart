@@ -26,7 +26,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<Either<Failure, Profile>> getProfile({bool isUpdated = false}) async {
-    Profile? result;
+    ProfileModel? result;
     try {
       result = await _localDataSource.getProfile();
       final expiredAt = await _localDataSource.getExpiredAt();
@@ -38,12 +38,12 @@ class ProfileRepositoryImpl implements ProfileRepository {
         await _localDataSource.updateExpiredAt();
         if (result != remoteProfile) {
           await _localDataSource.deleteProfile();
-          await _localDataSource.saveProfile(remoteProfile);
+          await _localDataSource.saveProfile(remoteProfile.toEntity());
         }
         result = remoteProfile;
       }
 
-      return Right(result);
+      return Right(result.toEntity());
     } on ErrorRequestException {
       return Left(ServerFailure());
     } catch (e) {
@@ -55,7 +55,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, bool>> saveProfile(Profile profile) async {
     try {
       final result = await _localDataSource.saveProfile(
-        ProfileModel.fromEntity(profile),
+        profile,
       );
       return Right(result);
     } catch (e) {

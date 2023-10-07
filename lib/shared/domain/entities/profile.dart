@@ -1,48 +1,27 @@
 import 'package:equatable/equatable.dart';
 
 class Profile extends Equatable {
-
   const Profile({
-    this.id = '',
-    this.name = '',
-    this.avatar = '',
-    this.email = '',
-    this.isEmailVerified = false,
-    this.isPhoneVerified = false,
-    this.dateOfBirth,
-    this.gender = '',
-    this.phoneNumber = '',
-    this.suspendedUntil,
-    this.updatedAt,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.username,
+    this.photo,
   });
   final String id;
   final String name;
-  final String? avatar;
+  final String? photo;
   final String email;
-  final bool isEmailVerified;
-  final bool isPhoneVerified;
-  final DateTime? dateOfBirth;
-  final String gender;
-  final String? phoneNumber;
-  final DateTime? suspendedUntil;
-  final DateTime? updatedAt;
-
-  bool get isSuspended => suspendedUntil != null;
-
-  bool get isAccountVerified => isPhoneVerified && isEmailVerified;
+  final String username;
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        avatar,
-        email,
-        isEmailVerified,
-        isPhoneVerified,
-        dateOfBirth,
-        gender,
-        phoneNumber,
-        suspendedUntil,
-        updatedAt,
-      ];
+  List<Object?> get props {
+    return [
+      id,
+      name,
+      photo,
+      email,
+      username,
+    ];
+  }
 }

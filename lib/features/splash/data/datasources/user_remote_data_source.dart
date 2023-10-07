@@ -1,5 +1,6 @@
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/typedef.dart';
+import 'package:flutter_social/core/graphql/modules/public_graphql_module.dart';
 import 'package:flutter_social/features/splash/data/models/user_model.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -13,15 +14,16 @@ abstract class UserRemoteDataSource {
 
 @LazySingleton(as: UserRemoteDataSource)
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final _graphQlClient =
-      getIt<GraphQLClient>(instanceName: 'mainGraphQLClient');
+  final _graphQLModule =
+      getIt<PublicGraphQLModule>();
 
   @override
   Future<List<UserModel>> getAllUsers({
     required int page,
     required int perPage,
   }) async {
-    final result = await _graphQlClient.query(
+    final client = await _graphQLModule.client;
+    final result = await client.query(
       QueryOptions(
         fetchPolicy: FetchPolicy.noCache,
         document: gql(r'''

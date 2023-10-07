@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_social/core/constants/json_constant.dart';
 import 'package:flutter_social/core/constants/storage_constant.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
+import 'package:flutter_social/core/extension/typedef.dart';
 import 'package:flutter_social/core/local_storage/local_storage.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
 import 'package:flutter_social/shared/domain/entities/profile.dart';
@@ -50,11 +50,7 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
       return null;
     }
 
-    final data = jsonDecode(dataString)[JsonConstant.data];
-    final json = <String, dynamic>{
-      JsonConstant.id: data[JsonConstant.id],
-      ...{JsonConstant.attributes: data[JsonConstant.attributes]},
-    };
+    final json = jsonDecode(dataString) as JSON;
 
     return ProfileModel.fromJson(json);
   }
