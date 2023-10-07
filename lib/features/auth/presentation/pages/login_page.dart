@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                       );
                 } else if (state is AppDataProfileLoaded) {
                   EasyLoading.dismiss();
-                  getIt<FSRouter>().replace(const HomeRoute());
+                  getIt<FSRouter>().replace(MainRoute());
                 }
               },
             ),

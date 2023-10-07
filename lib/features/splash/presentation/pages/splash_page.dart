@@ -25,7 +25,7 @@ class SplashPage extends StatelessWidget {
               const LoginRoute(),
             ),
           AppDataProfileLoaded() => getIt<FSRouter>().replace(
-              const HomeRoute(),
+              MainRoute(),
             ),
           _ => {},
         },
