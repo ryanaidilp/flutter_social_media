@@ -1,5 +1,6 @@
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/typedef.dart';
+import 'package:flutter_social/core/graphql/modules/auth_graphql_module.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
@@ -10,13 +11,12 @@ abstract class ProfileRemoteDataSource {
 
 @LazySingleton(as: ProfileRemoteDataSource)
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
-  final _graphQlClient = getIt<GraphQLClient>(
-    instanceName: 'authGraphQLClient',
-  );
+  final _graphQLModule = getIt<AuthGraphQLModule>();
 
   @override
   Future<ProfileModel> getProfile() async {
-    final result = await _graphQlClient.query(
+    final client = await _graphQLModule.client;
+    final result = await client.query(
       QueryOptions(
         document: gql('''
           query {

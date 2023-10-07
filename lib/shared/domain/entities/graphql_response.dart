@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import 'package:flutter_social/shared/domain/entities/pagination.dart';
 
-class GraphqlResponse<T> extends Equatable {
-  const GraphqlResponse({
+class GraphQLResponse<T> extends Equatable {
+  const GraphQLResponse({
     this.data,
     this.pagination,
   });

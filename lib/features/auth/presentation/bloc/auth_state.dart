@@ -1,0 +1,9 @@
+part of 'auth_bloc.dart';
+
+@freezed
+class AuthState with _$AuthState {
+  const factory AuthState.initial() = _Initial;
+  const factory AuthState.loggingIn() = LoggingIn;
+  const factory AuthState.loginFailed({required Failure failure}) = LoginFailed;
+  const factory AuthState.loginSuccess({required String token}) = LoginSuccess;
+}

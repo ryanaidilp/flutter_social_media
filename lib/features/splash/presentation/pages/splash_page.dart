@@ -1,8 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_social/core/assets/assets.gen.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
-import 'package:flutter_social/features/splash/presentation/bloc/user_bloc.dart';
+import 'package:flutter_social/router/fs_router.dart';
+import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 @RoutePage()
 class SplashPage extends StatelessWidget {
@@ -11,31 +15,51 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash Page'),
-      ),
-      body: BlocBuilder<UserBloc, UserState>(
-        bloc: getIt<UserBloc>(),
-        builder: (context, state) => switch (state) {
-          UserLoading() => const Center(
-              child: CircularProgressIndicator(),
+      body: BlocListener<AppDataBloc, AppDataState>(
+        listener: (context, state) => switch (state) {
+          AppDataAuthenticated() => context.read<AppDataBloc>()
+            ..add(
+              const AppDataEvent.loadProfile(),
             ),
-          UserError(failure: final failure) => Center(
-              child: Text(failure.toString()),
+          AppDataUnauthenticated() => getIt<FSRouter>().replace(
+              const LoginRoute(),
             ),
-          UserLoaded(data: final data) => Center(
-              child: Text(data.toString()),
+          AppDataProfileLoaded() => getIt<FSRouter>().replace(
+              const HomeRoute(),
             ),
-          _ => Center(
-              child: TextButton(
-                onPressed: () => getIt<UserBloc>()
-                  ..add(
-                    const UserEvent.loadUserData(),
+          _ => {},
+        },
+        child: Stack(
+          children: [
+            Align(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Assets.logo.flutterSocialIcons.image(
+                    width: 100.w,
+                    height: 100.h,
                   ),
-                child: const Text('Load Data'),
+                  8.verticalSpace,
+                  const Text(
+                    'Flutter Social Demo',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
-        },
+            Positioned(
+              bottom: 48.h,
+              left: 0,
+              right: 0,
+              child: SpinKitFadingCircle(
+                size: 30.sp,
+                color: Colors.blueAccent,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
