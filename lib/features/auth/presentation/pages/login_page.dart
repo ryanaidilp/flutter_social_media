@@ -46,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: MultiBlocListener(
           listeners: [
             BlocListener<AuthBloc, AuthState>(
@@ -189,6 +190,17 @@ class _LoginPageState extends State<LoginPage> {
                                       },
                                 child: const Text('Login'),
                               ),
+                            ),
+                          ),
+                          24.verticalSpace,
+                          SizedBox(
+                            height: 48.h,
+                            width: 1.sw,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                getIt<FSRouter>().push(const RegisterRoute());
+                              },
+                              child: const Text('Register'),
                             ),
                           ),
                         ],

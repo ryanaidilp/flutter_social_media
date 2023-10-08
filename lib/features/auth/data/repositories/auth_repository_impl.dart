@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/failures/failures.dart';
 import 'package:flutter_social/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:flutter_social/features/auth/domain/repositories/auth_repository.dart';
-import 'package:flutter_social/shared/domain/entities/profile.dart';
 import 'package:flutter_social/utils/device_info_util.dart';
 import 'package:injectable/injectable.dart';
 
@@ -52,12 +53,27 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, Profile>> register({
+  Future<Either<Failure, bool>> register({
     required String name,
     required String email,
     required String username,
-  }) {
-    // TODO: implement register
-    throw UnimplementedError();
+    required String password,
+  }) async {
+    try {
+      log(
+        '{name: $name, email: $email, username: $username, password:$password}',
+        name: 'RegisterRepo',
+      );
+      final result = await _remoteDataSource.register(
+        name: name,
+        email: email,
+        username: username,
+        password: password,
+      );
+
+      return Right(result);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
   }
 }

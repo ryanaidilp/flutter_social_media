@@ -10,6 +10,13 @@ abstract class AuthRemoteDataSource {
     required String deviceName,
   });
 
+  Future<bool> register({
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+  });
+
   Future<bool> logout(String id);
 }
 
@@ -41,7 +48,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
 
     if (result.hasException) {
-      throw Exception(result.exception);
+      throw Exception(result.exception?.graphqlErrors.first.message);
     }
 
     final data = result.data?['login'];
@@ -72,15 +79,68 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
 
     if (result.hasException) {
-      throw Exception(result.exception);
+      throw Exception(result.exception?.graphqlErrors.first.message);
     }
 
     final data = result.data?['logout'];
 
     if (data == null) {
-      throw Exception('Failed to login!');
+      throw Exception('Failed to logout!');
     }
 
     return data as bool;
+  }
+
+  @override
+  Future<bool> register({
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    final client = await _publicGraphQLModule.client;
+    final result = await client.mutate(
+      MutationOptions(
+        document: gql(r'''
+       mutation Register(
+         $name: String!
+         $username: String!
+         $email: String!
+         $password: String!
+       ) {
+         createUser(
+           name: $name
+           username: $username
+           email: $email
+           password: $password
+         ) {
+          id
+          name
+          email
+          username 
+         }
+       }
+      '''),
+        variables: {
+          'name': name,
+          'username': username,
+          'email': email,
+          'password': password,
+        },
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.first.message);
+    }
+
+    final data = result.data?['createUser'];
+
+    if (data == null) {
+      throw Exception('Failed to register!');
+    }
+
+    return true;
   }
 }
