@@ -1,5 +1,5 @@
 import 'package:flutter_social/features/home/domain/entities/post.dart';
-import 'package:flutter_social/features/splash/data/models/user_model.dart';
+import 'package:flutter_social/features/users/data/models/user_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'post_model.freezed.dart';

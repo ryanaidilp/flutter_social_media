@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/failures/failures.dart';
-import 'package:flutter_social/features/splash/data/datasources/user_remote_data_source.dart';
-import 'package:flutter_social/features/splash/data/models/user_model.dart';
-import 'package:flutter_social/features/splash/domain/entities/user.dart';
-import 'package:flutter_social/features/splash/domain/repositories/user_repository.dart';
+import 'package:flutter_social/features/users/data/datasources/user_remote_data_source.dart';
+import 'package:flutter_social/features/users/data/models/user_model.dart';
+import 'package:flutter_social/features/users/domain/entities/user.dart';
+import 'package:flutter_social/features/users/domain/repositories/user_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: UserRepository)

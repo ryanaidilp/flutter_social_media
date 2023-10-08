@@ -1,4 +1,4 @@
-import 'package:flutter_social/features/splash/domain/entities/user.dart';
+import 'package:flutter_social/features/users/domain/entities/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_model.freezed.dart';

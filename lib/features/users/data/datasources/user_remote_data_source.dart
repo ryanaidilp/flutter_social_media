@@ -1,7 +1,7 @@
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/typedef.dart';
 import 'package:flutter_social/core/graphql/modules/public_graphql_module.dart';
-import 'package:flutter_social/features/splash/data/models/user_model.dart';
+import 'package:flutter_social/features/users/data/models/user_model.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 

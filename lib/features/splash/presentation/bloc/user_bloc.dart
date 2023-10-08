@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/failures/failures.dart';
-import 'package:flutter_social/features/splash/domain/entities/user.dart';
-import 'package:flutter_social/features/splash/domain/usecases/get_all_users.dart';
+import 'package:flutter_social/features/users/domain/entities/user.dart';
+import 'package:flutter_social/features/users/domain/usecases/get_all_users.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
