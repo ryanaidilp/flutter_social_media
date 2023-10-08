@@ -21,4 +21,10 @@ abstract class PostRepository {
     required String description,
     required File image,
   });
+
+  Future<Either<Failure, GraphQLResponse<List<Post>>>> getUserPosts({
+    required String username,
+    required int page,
+    required int perPage,
+  });
 }

@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/num_x.dart';
 import 'package:flutter_social/core/extension/widget_x.dart';
 import 'package:flutter_social/features/users/domain/entities/user.dart';
 import 'package:flutter_social/features/users/presentation/bloc/user_bloc.dart';
+import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_infinite_scroll.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_user_card.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -109,6 +111,11 @@ class _UserListPageState extends State<UserListPage> {
           itemBuilder: (context, item, index) {
             final user = item as User?;
             return FsUserCard(
+              onTap: () => getIt<FSRouter>().push(
+                UserDetailRoute(
+                  username: user?.username ?? '',
+                ),
+              ),
               name: user?.name,
               photo: user?.photo,
               username: user?.username,

@@ -1,9 +1,11 @@
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/typedef.dart';
+import 'package:flutter_social/core/graphql/modules/auth_graphql_module.dart';
 import 'package:flutter_social/core/network/api_endpoint.dart';
 import 'package:flutter_social/core/network/http/modules/flutter_social_http_module.dart';
 import 'package:flutter_social/features/users/data/models/user_model.dart';
 import 'package:flutter_social/shared/data/models/api_response_model.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class UserRemoteDataSource {
@@ -11,11 +13,14 @@ abstract class UserRemoteDataSource {
     required int page,
     required int perPage,
   });
+
+  Future<UserModel> getUserDetail(String username);
 }
 
 @LazySingleton(as: UserRemoteDataSource)
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   final _httpClient = getIt<FlutterSocialHttpModule>();
+  final _graphQLModule = getIt<AuthGraphQLModule>();
 
   @override
   Future<ApiResponseModel<List<UserModel>>> getAllUsers({
@@ -52,5 +57,40 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         return json.map((e) => UserModel.fromJson(e as JSON)).toList();
       },
     );
+  }
+  
+  @override
+  Future<UserModel> getUserDetail(String username) async {
+    final client = await _graphQLModule.client;
+    final result = await client.query(
+      QueryOptions(
+        document: gql(r'''
+          query User($username: String!){
+            user(username: $username) {
+              id
+              name
+              username
+              photo
+              email
+              post_count
+              followers_count
+              following_count
+	          }
+          }
+
+        '''),
+        errorPolicy: ErrorPolicy.all,
+        fetchPolicy: FetchPolicy.noCache,
+        variables: {
+          'username': username,
+        },
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception?.graphqlErrors.first.message);
+    }
+
+    return UserModel.fromJson(result.data?['user'] as JSON);
   }
 }

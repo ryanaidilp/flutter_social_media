@@ -80,4 +80,28 @@ class PostRepositoryImpl implements PostRepository {
       return Left(NetworkFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, GraphQLResponse<List<Post>>>> getUserPosts({
+    required String username,
+    required int page,
+    required int perPage,
+  }) async {
+    try {
+      final result = await _remoteDataSource.getUserPosts(
+        username: username,
+        page: page,
+        perPage: perPage,
+      );
+      final data = result.data?.map((e) => e.toEntity()).toList();
+      final response = GraphQLResponse<List<Post>>(
+        data: data,
+        pagination: result.pagination?.toEntity(),
+      );
+
+      return Right(response);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
 }

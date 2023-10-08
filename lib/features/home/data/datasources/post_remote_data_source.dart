@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -19,6 +20,12 @@ abstract class PostRemoteDataSource {
   });
 
   Future<GraphQLResponseModel<List<PostModel>>> getMyPosts({
+    required int page,
+    required int perPage,
+  });
+
+  Future<GraphQLResponseModel<List<PostModel>>> getUserPosts({
+    required String username,
     required int page,
     required int perPage,
   });
@@ -83,7 +90,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     final data = result.data;
 
     if (result.hasException || data == null) {
-      throw Exception(result.exception);
+      throw Exception(result.exception?.graphqlErrors.first.message);
     }
 
     final pagination = data['posts']['paginatorInfo'] as JSON;
@@ -155,7 +162,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     final data = result.data;
 
     if (result.hasException || data == null) {
-      throw Exception(result.exception);
+      throw Exception(result.exception?.graphqlErrors.first.message);
     }
 
     final pagination = data['myPosts']['paginatorInfo'] as JSON;
@@ -203,5 +210,80 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     }
 
     return PostModel.fromJson(result['data'] as JSON);
+  }
+
+  @override
+  Future<GraphQLResponseModel<List<PostModel>>> getUserPosts({
+    required String username,
+    required int page,
+    required int perPage,
+  }) async {
+    log('username: $username, page: $page, perPage: $perPage');
+    final client = await _graphQLAuthModule.client;
+    final result = await client.query(
+      QueryOptions(
+        document: gql(r'''
+          query UserPost($page: Int!, $perPage: Int!, $username: String!) {
+            userPosts(first: $perPage, page: $page, username: $username) {
+              data {
+                id
+                image
+                description
+                created_at
+                user {
+                  id
+                  name
+                  username
+                  email
+                  followers_count
+                  following_count
+                  post_count
+                  photo
+                }
+              }
+              paginatorInfo {
+                total
+                currentPage
+                perPage
+                lastPage
+                hasMorePages
+              }
+            }
+          }'''),
+        fetchPolicy: FetchPolicy.noCache,
+        variables: {
+          'page': page,
+          'perPage': perPage,
+          'username': username,
+        },
+      ),
+    );
+
+    final data = result.data;
+
+    if (result.hasException || data == null) {
+      throw Exception(result.exception?.graphqlErrors.first.message);
+    }
+
+    final pagination = data['userPosts']['paginatorInfo'] as JSON;
+    final posts = data['userPosts']['data'] as List;
+
+    final paginationData = PaginationModel.fromJson(pagination);
+
+    final jsonData = {
+      'pagination': paginationData.toJson(),
+      'data': posts,
+    };
+
+    return GraphQLResponseModel<List<PostModel>>.fromJson(
+      jsonData,
+      (json) {
+        if (json == null || json is! List) {
+          return [];
+        }
+
+        return json.map((e) => PostModel.fromJson(e as JSON)).toList();
+      },
+    );
   }
 }

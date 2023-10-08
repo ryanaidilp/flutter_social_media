@@ -8,4 +8,6 @@ abstract class UserRepository {
     int page = 1,
     int perPage = 10,
   });
+
+  Future<Either<Failure,User>> getUserDetail(String username);
 }

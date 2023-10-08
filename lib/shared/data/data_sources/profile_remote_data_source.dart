@@ -38,7 +38,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     );
 
     if (result.hasException) {
-      throw Exception(result.exception);
+      throw Exception(result.exception?.graphqlErrors.first.message);
     }
 
     return ProfileModel.fromJson(result.data?['profile'] as JSON);
