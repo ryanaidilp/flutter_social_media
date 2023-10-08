@@ -1,12 +1,13 @@
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/typedef.dart';
-import 'package:flutter_social/core/graphql/modules/public_graphql_module.dart';
+import 'package:flutter_social/core/network/api_endpoint.dart';
+import 'package:flutter_social/core/network/http/modules/flutter_social_http_module.dart';
 import 'package:flutter_social/features/users/data/models/user_model.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:flutter_social/shared/data/models/api_response_model.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class UserRemoteDataSource {
-  Future<List<UserModel>> getAllUsers({
+  Future<ApiResponseModel<List<UserModel>>> getAllUsers({
     required int page,
     required int perPage,
   });
@@ -14,62 +15,42 @@ abstract class UserRemoteDataSource {
 
 @LazySingleton(as: UserRemoteDataSource)
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final _graphQLModule = getIt<PublicGraphQLModule>();
+  final _httpClient = getIt<FlutterSocialHttpModule>();
 
   @override
-  Future<List<UserModel>> getAllUsers({
+  Future<ApiResponseModel<List<UserModel>>> getAllUsers({
     required int page,
     required int perPage,
   }) async {
-    final client = await _graphQLModule.client;
-    final result = await client.query(
-      QueryOptions(
-        fetchPolicy: FetchPolicy.noCache,
-        document: gql(r'''
-          query Query($limit: Int!, $page: Int!){
-            users(first: $limit, page: $page){
-            	paginatorInfo {
-                total
-                currentPage
-                perPage
-                firstItem
-                lastItem
-                lastPage
-                count
-                hasMorePages
-              }
-              data {
-                id
-                name
-                username
-                email
-                followers_count
-                following_count
-                post_count
-                photo
-              }
-
-            }
-          }
-    '''),
-        variables: {
-          'limit': perPage,
-          'page': page,
-        },
-        errorPolicy: ErrorPolicy.all,
-      ),
+    final result = await _httpClient.get(
+      ApiEndpoint.users(),
+      param: {
+        'page': page,
+        'per_page': perPage,
+      },
     );
 
-    if (result.hasException) {
-      throw Exception(result.exception);
+    if (result.containsKey('status') && result['status'] != true) {
+      throw Exception(result['message']);
     }
 
-    final data = result.data?['users']['data'] as List?;
+    final pagination = result['meta']['pagination'] as JSON;
+    final data = result['data'];
 
-    if (data == null) {
-      return [];
-    }
+    final json = {
+      'pagination': pagination,
+      'data': data,
+    };
 
-    return data.map((e) => UserModel.fromJson(e as JSON)).toList();
+    return ApiResponseModel<List<UserModel>>.fromJson(
+      json,
+      (json) {
+        if (json == null || json is! List) {
+          return [];
+        }
+
+        return json.map((e) => UserModel.fromJson(e as JSON)).toList();
+      },
+    );
   }
 }

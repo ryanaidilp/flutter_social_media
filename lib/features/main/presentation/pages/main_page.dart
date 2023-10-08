@@ -8,6 +8,7 @@ import 'package:flutter_social/features/create_post/presentation/bloc/create_pos
 import 'package:flutter_social/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_social/features/main/presentation/bloc/main_bloc.dart';
 import 'package:flutter_social/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_social/features/users/presentation/bloc/user_bloc.dart';
 import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
 
@@ -30,6 +31,12 @@ class MainPage extends StatelessWidget {
               ),
             ),
         ),
+        BlocProvider<UserBloc>(
+          create: (_) => UserBloc()
+            ..add(
+              const UserEvent.loadInitialUsers(),
+            ),
+        ),
         BlocProvider<CreatePostBloc>(
           create: (_) => CreatePostBloc(),
         ),
@@ -42,7 +49,12 @@ class MainPage extends StatelessWidget {
       ],
       child: AutoTabsRouter.pageView(
         homeIndex: 0,
-        routes: const [HomeRoute(), CreatePostRoute(), ProfileRoute()],
+        routes: const [
+          HomeRoute(),
+          UserListRoute(),
+          CreatePostRoute(),
+          ProfileRoute(),
+        ],
         builder: (context, child, pageController) {
           final tabRouter = AutoTabsRouter.of(context);
 
@@ -113,6 +125,12 @@ class MainPage extends StatelessWidget {
                       Icons.home,
                     ),
                     label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.people_alt_rounded,
+                    ),
+                    label: 'Discover',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(

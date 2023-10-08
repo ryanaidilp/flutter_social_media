@@ -15,6 +15,7 @@ abstract class UserModel with _$UserModel {
     @JsonKey(name: 'following_count') required int followingCount,
     @JsonKey(name: 'followers_count') required int followersCount,
     @JsonKey() String? photo,
+    @JsonKey() DateTime? followedAt,
   }) = _UserModel;
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);
@@ -30,5 +31,6 @@ extension UserModelX on UserModel {
         postCount: postCount,
         followersCount: followersCount,
         followingCount: followingCount,
+        followedAt: followedAt,
       );
 }

@@ -6,6 +6,7 @@ import 'package:flutter_social/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_social/features/main/presentation/pages/main_page.dart';
 import 'package:flutter_social/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter_social/features/splash/presentation/pages/splash_page.dart';
+import 'package:flutter_social/features/users/presentation/pages/user_list_page.dart';
 import 'package:flutter_social/router/guards/fs_auth_guard.dart';
 import 'package:flutter_social/router/guards/fs_guest_guard.dart';
 import 'package:flutter_social/shared/wrapper/page_wrapper.dart';
@@ -38,6 +39,10 @@ class FSRouter extends _$FSRouter {
                 AutoRoute(
                   page: HomeRoute.page,
                   path: 'home',
+                ),
+                AutoRoute(
+                  page: UserListRoute.page,
+                  path: 'users',
                 ),
                 AutoRoute(
                   page: CreatePostRoute.page,

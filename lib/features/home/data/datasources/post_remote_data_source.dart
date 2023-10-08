@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -202,8 +201,6 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     if (result.containsKey('status') && result['status'] != true) {
       throw Exception(result['message']);
     }
-
-    log(result.toString());
 
     return PostModel.fromJson(result['data'] as JSON);
   }
