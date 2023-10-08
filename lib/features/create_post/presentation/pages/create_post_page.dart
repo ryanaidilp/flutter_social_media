@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,25 +82,51 @@ class _CreatePostPageState extends State<CreatePostPage> {
               valueListenable: file,
               builder: (context, value, child) {
                 if (value != null) {
-                  return Stack(
-                    children: [
-                      ExtendedImage.file(
-                        value,
-                        width: 1.sw,
-                        height: 0.25.sh,
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: Border.all(color: Colors.blueGrey.shade100),
-                        fit: BoxFit.cover,
-                      ),
-                      Positioned(
-                        bottom: 4.h,
-                        right: 4.w,
-                        child: IconButton.filled(
-                          onPressed: () => file.value = null,
-                          icon: const Icon(Icons.delete),
+                  return InkWell(
+                    onTap: () async {
+                      final multiImageProvider = MultiImageProvider(
+                        [
+                          ExtendedImage.file(
+                            value,
+                            width: 1.sw,
+                            height: 0.25.sh,
+                            borderRadius: BorderRadius.circular(10.r),
+                            border: Border.all(color: Colors.blueGrey.shade100),
+                            fit: BoxFit.cover,
+                          ).image,
+                        ],
+                      );
+
+                      await showImageViewerPager(
+                        context,
+                        multiImageProvider,
+                        doubleTapZoomable: true,
+                        useSafeArea: true,
+                        immersive: false,
+                        backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(10.r),
+                    child: Stack(
+                      children: [
+                        ExtendedImage.file(
+                          value,
+                          width: 1.sw,
+                          height: 0.25.sh,
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(color: Colors.blueGrey.shade100),
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          bottom: 4.h,
+                          right: 4.w,
+                          child: IconButton.filled(
+                            onPressed: () => file.value = null,
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 }
 

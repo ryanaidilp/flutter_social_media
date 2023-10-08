@@ -6,4 +6,9 @@ class ApiEndpoint {
   static final baseUrl = Env.apiBaseUrl;
 
   static String createPost() => 'post/create';
+  static String users() => 'users';
+  static String followers() => 'followers';
+  static String followings() => 'followings';
+  static String follow() => 'follow';
+  static String unfollow() => 'unfollow';
 }

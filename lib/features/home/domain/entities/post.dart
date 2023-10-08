@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:flutter_social/features/splash/domain/entities/user.dart';
+import 'package:flutter_social/features/users/domain/entities/user.dart';
 
 class Post extends Equatable {
   const Post({

@@ -1,11 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/num_x.dart';
 import 'package:flutter_social/core/extension/widget_x.dart';
 import 'package:flutter_social/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_social/features/home/domain/entities/post.dart';
 import 'package:flutter_social/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_social/features/users/domain/entities/follow_argument.dart';
+import 'package:flutter_social/features/users/domain/enums/user_action.dart';
+import 'package:flutter_social/features/users/presentation/bloc/user_follow_bloc.dart';
+import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_infinite_scroll.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_post_card.dart';
@@ -121,6 +126,64 @@ class _ProfilePageState extends State<ProfilePage> {
                       postCount: profile.postCount,
                       followerCount: profile.followersCount,
                       followingCount: profile.followingCount,
+                      onFollowersTap: () async {
+                        final result =
+                            await getIt<FSRouter>().push<FollowArgument?>(
+                          FollowersRoute(username: profile.username),
+                        );
+
+                        if (result == null) {
+                          return;
+                        }
+
+                        if (context.mounted) {
+                          switch (result.action) {
+                            case UserAction.follow:
+                              context.read<UserFollowBloc>().add(
+                                    UserFollowEvent.follow(
+                                      username: result.username,
+                                    ),
+                                  );
+                            case UserAction.unfollow:
+                              context.read<UserFollowBloc>().add(
+                                    UserFollowEvent.unfollow(
+                                      username: result.username,
+                                    ),
+                                  );
+                            case UserAction.none:
+                              return;
+                          }
+                        }
+                      },
+                      onFollowingTap: () async {
+                        final result =
+                            await getIt<FSRouter>().push<FollowArgument?>(
+                          FollowingRoute(username: profile.username),
+                        );
+
+                        if (result == null) {
+                          return;
+                        }
+
+                        if (context.mounted) {
+                          switch (result.action) {
+                            case UserAction.follow:
+                              context.read<UserFollowBloc>().add(
+                                    UserFollowEvent.follow(
+                                      username: result.username,
+                                    ),
+                                  );
+                            case UserAction.unfollow:
+                              context.read<UserFollowBloc>().add(
+                                    UserFollowEvent.unfollow(
+                                      username: result.username,
+                                    ),
+                                  );
+                            case UserAction.none:
+                              return;
+                          }
+                        }
+                      },
                     ),
                   AppDataLoading() => const FSProfileHeader(
                       name: 'This is placeholder name',

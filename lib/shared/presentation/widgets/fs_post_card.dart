@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,11 +56,31 @@ class FSPostCard extends StatelessWidget {
           ),
         ),
         8.verticalSpace,
-        FSNetworkImage(
-          url: usingBaseUrl ? '${Env.apiBaseUrl}/$imageUrl' : imageUrl,
-          width: 1.sw,
-          height: 0.4.sh,
-          fit: BoxFit.cover,
+        InkWell(
+          onTap: () async {
+            final multiImageProvider = MultiImageProvider(
+              [
+                ExtendedImage.network(
+                  usingBaseUrl ? '${Env.apiBaseUrl}/$imageUrl' : imageUrl,
+                ).image,
+              ],
+            );
+
+            await showImageViewerPager(
+              context,
+              multiImageProvider,
+              doubleTapZoomable: true,
+              useSafeArea: true,
+              immersive: false,
+              backgroundColor: Colors.blueGrey.withOpacity(0.2),
+            );
+          },
+          child: FSNetworkImage(
+            url: usingBaseUrl ? '${Env.apiBaseUrl}/$imageUrl' : imageUrl,
+            width: 1.sw,
+            height: 0.4.sh,
+            fit: BoxFit.cover,
+          ),
         ),
         MarkdownParse(
           selectable: true,

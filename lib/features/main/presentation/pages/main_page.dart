@@ -8,6 +8,8 @@ import 'package:flutter_social/features/create_post/presentation/bloc/create_pos
 import 'package:flutter_social/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_social/features/main/presentation/bloc/main_bloc.dart';
 import 'package:flutter_social/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:flutter_social/features/users/presentation/bloc/user_bloc.dart';
+import 'package:flutter_social/features/users/presentation/bloc/user_follow_bloc.dart';
 import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
 
@@ -30,8 +32,17 @@ class MainPage extends StatelessWidget {
               ),
             ),
         ),
+        BlocProvider<UserBloc>(
+          create: (_) => UserBloc()
+            ..add(
+              const UserEvent.loadInitialUsers(),
+            ),
+        ),
         BlocProvider<CreatePostBloc>(
           create: (_) => CreatePostBloc(),
+        ),
+        BlocProvider<UserFollowBloc>(
+          create: (_) => UserFollowBloc(),
         ),
         BlocProvider<ProfileBloc>(
           create: (_) => ProfileBloc()
@@ -42,7 +53,12 @@ class MainPage extends StatelessWidget {
       ],
       child: AutoTabsRouter.pageView(
         homeIndex: 0,
-        routes: const [HomeRoute(), CreatePostRoute(), ProfileRoute()],
+        routes: const [
+          HomeRoute(),
+          UserListRoute(),
+          CreatePostRoute(),
+          ProfileRoute(),
+        ],
         builder: (context, child, pageController) {
           final tabRouter = AutoTabsRouter.of(context);
 
@@ -100,8 +116,72 @@ class MainPage extends StatelessWidget {
                   }
                 },
               ),
-              BlocListener<MainBloc, MainState>(
-                listener: (context, state) {},
+              BlocListener<UserFollowBloc, UserFollowState>(
+                listener: (context, state) async {
+                  if (state is FollowingFollowState) {
+                    await EasyLoading.show(status: 'Following');
+                  } else if (state is FollowingSuccess) {
+                    await EasyLoading.dismiss();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Successfully following!'),
+                        ),
+                      );
+                      context.read<HomeBloc>().add(const HomeEvent.refresh());
+                      context.read<UserBloc>().add(const UserEvent.refresh());
+                      context.read<ProfileBloc>().add(
+                            const ProfileEvent.refresh(),
+                          );
+                      context
+                          .read<AppDataBloc>()
+                          .add(const AppDataEvent.loadProfile(isUpdated: true));
+                    }
+                  } else if (state is UnfollowingSuccess) {
+                    await EasyLoading.dismiss();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Successfully following!'),
+                        ),
+                      );
+                      context.read<HomeBloc>().add(const HomeEvent.refresh());
+                      context.read<UserBloc>().add(const UserEvent.refresh());
+                      context.read<ProfileBloc>().add(
+                            const ProfileEvent.refresh(),
+                          );
+                      context
+                          .read<AppDataBloc>()
+                          .add(const AppDataEvent.loadProfile(isUpdated: true));
+                    }
+                  } else if (state is FollowingFailed) {
+                    await EasyLoading.dismiss();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(state.failure.toString()),
+                        ),
+                      );
+                    }
+                  } else if (state is UnfollowingFailed) {
+                    await EasyLoading.dismiss();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(state.failure.toString()),
+                        ),
+                      );
+                    }
+                  }
+                },
               ),
             ],
             child: Scaffold(
@@ -113,6 +193,12 @@ class MainPage extends StatelessWidget {
                       Icons.home,
                     ),
                     label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.people_alt_rounded,
+                    ),
+                    label: 'Discover',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
