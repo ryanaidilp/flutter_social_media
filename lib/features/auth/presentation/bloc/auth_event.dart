@@ -7,4 +7,6 @@ class AuthEvent with _$AuthEvent {
     required String password,
     required String identifier,
   }) = _Login;
+
+  const factory AuthEvent.logout(String id) = _Logout;
 }

@@ -29,4 +29,17 @@ class AppDataState with _$AppDataState {
   const factory AppDataState.profileNotStored({
     required Failure failure,
   }) = AppDataProfileNotStored;
+
+
+  const factory AppDataState.tokenDeleted() = AppDataTokenDeleted;
+
+  const factory AppDataState.tokenNotDeleted({
+    required Failure failure,
+  }) = AppDataTokenNotDeleted;
+
+  const factory AppDataState.profileDeleted() = AppDataProfileDeleted;
+
+  const factory AppDataState.profileNotDeleted({
+    required Failure failure,
+  }) = AppDataProfileNotDeleted;
 }

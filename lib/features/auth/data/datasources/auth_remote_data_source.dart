@@ -9,6 +9,8 @@ abstract class AuthRemoteDataSource {
     required String password,
     required String deviceName,
   });
+
+  Future<bool> logout(String id);
 }
 
 @LazySingleton(as: AuthRemoteDataSource)
@@ -49,5 +51,36 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
 
     return data.toString();
+  }
+
+  @override
+  Future<bool> logout(String id) async {
+    final client = await _publicGraphQLModule.client;
+    final result = await client.mutate(
+      MutationOptions(
+        document: gql(r'''
+        mutation Logout($id: ID!) {
+          logout(id: $id)
+        }
+
+      '''),
+        variables: {
+          'id': id,
+        },
+        fetchPolicy: FetchPolicy.noCache,
+      ),
+    );
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    final data = result.data?['logout'];
+
+    if (data == null) {
+      throw Exception('Failed to login!');
+    }
+
+    return data as bool;
   }
 }

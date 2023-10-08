@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/failures/failures.dart';
 import 'package:flutter_social/features/auth/domain/usecases/login.dart';
+import 'package:flutter_social/features/auth/domain/usecases/logout.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
@@ -28,9 +29,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             AuthState.loginSuccess(token: r),
           ),
         );
+      } else if (event is _Logout) {
+        emit(const AuthState.loggingOut());
+        final result = await logout(event.id);
+        result.fold(
+          (l) => emit(AuthState.logoutFailed(failure: l)),
+          (r) => r
+              ? emit(
+                  const AuthState.logoutSuccess(),
+                )
+              : emit(
+                  AuthState.logoutFailed(
+                    failure: ClientFailure(),
+                  ),
+                ),
+        );
       }
     });
   }
 
   final login = getIt<Login>();
+  final logout = getIt<Logout>();
 }

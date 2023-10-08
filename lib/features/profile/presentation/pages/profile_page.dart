@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_social/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_network_image.dart';
 
@@ -18,11 +19,20 @@ class ProfilePage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.logout_rounded,
-                ),
+              BlocBuilder<AppDataBloc, AppDataState>(
+                builder: (context, state) => switch (state) {
+                  AppDataProfileLoaded(profile: final profile) => IconButton(
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              AuthEvent.logout(profile.id),
+                            );
+                      },
+                      icon: const Icon(
+                        Icons.logout_rounded,
+                      ),
+                    ),
+                  _ => const SizedBox.shrink()
+                },
               ),
             ],
           ),
