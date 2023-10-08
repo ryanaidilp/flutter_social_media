@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocListener<HomeBloc, HomeState>(
         listener: (context, state) async {
-          if (state is LoadingPostsSuccess) {
+          if (state is HomePostSuccess) {
             final data = state.data;
 
             final isLastPage = !(data.pagination?.hasMorePages ?? false);
@@ -95,15 +95,15 @@ class _HomePageState extends State<HomePage> {
             if (refreshController.isRefresh) {
               refreshController.refreshCompleted();
             }
-          } else if (state is LoadingPostFailed) {
+          } else if (state is HomePostFailed) {
             pagingController.error = state.failure.toString();
             if (refreshController.isRefresh) {
               refreshController.refreshCompleted();
             }
-          } else if (state is PostUpdated) {
+          } else if (state is HomePostUpdated) {
             pagingController.refresh();
             await Future.delayed(3.seconds);
-          } else if (state is PostRefreshed) {
+          } else if (state is HomePostRefreshed) {
             pagingController.refresh();
             await refreshController.requestRefresh();
           }
@@ -116,6 +116,7 @@ class _HomePageState extends State<HomePage> {
           firstProgressIndicatorBuilder: (context) => ListView.separated(
             itemCount: 5,
             shrinkWrap: true,
+            padding: EdgeInsets.zero,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) => FSPostCard(
               usingBaseUrl: false,

@@ -17,7 +17,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc() : super(const _Initial()) {
     on<HomeEvent>(
       (event, emit) async {
-        if (event is LoadInitialPostEvent) {
+        if (event is _LoadInitialPostEvent) {
           emit(const HomeState.loadingPosts());
           final result = await getAllPosts(
             PaginationParam(
@@ -29,7 +29,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             (l) => emit(HomeState.loadingPostsFailed(failure: l, page: 1)),
             (r) => emit(HomeState.loadingPostsSuccess(data: r, page: 1)),
           );
-        } else if (event is LoadMorePostsEvent) {
+        } else if (event is _LoadMorePostEvent) {
           emit(const HomeState.loadingPosts());
           final result = await getAllPosts(
             PaginationParam(
@@ -52,9 +52,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ),
             ),
           );
-        } else if (event is PostsUpdatedEvent) {
+        } else if (event is _PostUpdatedEvent) {
           emit(const HomeState.update());
-        } else if (event is PostsRefreshEvent) {
+        } else if (event is _PostRefreshEvent) {
           emit(const HomeState.refresh());
         }
       },

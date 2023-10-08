@@ -36,9 +36,24 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<Failure, GraphQLResponse<List<Post>>>> getMyPosts(
-      {required int page, required int perPage,}) {
-    // TODO: implement getMyPosts
-    throw UnimplementedError();
+  Future<Either<Failure, GraphQLResponse<List<Post>>>> getMyPosts({
+    required int page,
+    required int perPage,
+  }) async {
+    try {
+      final result = await _remoteDataSource.getMyPosts(
+        page: page,
+        perPage: perPage,
+      );
+      final data = result.data?.map((e) => e.toEntity()).toList();
+      final response = GraphQLResponse<List<Post>>(
+        data: data,
+        pagination: result.pagination?.toEntity(),
+      );
+
+      return Right(response);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
   }
 }

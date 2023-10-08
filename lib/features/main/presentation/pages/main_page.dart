@@ -6,6 +6,7 @@ import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter_social/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_social/features/main/presentation/bloc/main_bloc.dart';
+import 'package:flutter_social/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
 
@@ -26,6 +27,12 @@ class MainPage extends StatelessWidget {
               const HomeEvent.loadInitialPost(
                 perPage: 10,
               ),
+            ),
+        ),
+        BlocProvider<ProfileBloc>(
+          create: (_) => ProfileBloc()
+            ..add(
+              const ProfileEvent.loadInitialPosts(),
             ),
         ),
       ],

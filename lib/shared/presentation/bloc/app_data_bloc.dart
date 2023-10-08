@@ -22,7 +22,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
   AppDataBloc() : super(const AppDataInitial()) {
     on<AppDataEvent>(
       (event, emit) async {
-        if (event is CheckIfAuthenticatedEvent) {
+        if (event is _CheckIfAuthenticatedEvent) {
           emit(const AppDataState.loading());
           await Future.delayed(5.seconds);
           final result = await getAccessToken(NoParams());
@@ -31,7 +31,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
             (l) => emit(const AppDataState.unauthenticated()),
             (r) => emit(const AppDataState.authenticated()),
           );
-        } else if (event is LoadProfileEvent) {
+        } else if (event is _LoadProfileEvent) {
           emit(const AppDataState.loading());
           final result = await getProfile(NoParams());
 
@@ -39,21 +39,21 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
             (l) => emit(const AppDataState.unauthenticated()),
             (r) => emit(AppDataState.profileLoaded(profile: r)),
           );
-        } else if (event is SaveTokenEvent) {
+        } else if (event is _SaveTokenEvent) {
           emit(const AppDataState.loading());
           final result = await saveAccessToken(event.token);
           result.fold(
             (l) => emit(AppDataState.tokenNotStored(failure: l)),
             (r) => emit(const AppDataState.tokenStored()),
           );
-        } else if (event is SaveProfileEvent) {
+        } else if (event is _SaveProfileEvent) {
           emit(const AppDataState.loading());
           final result = await saveProfile(event.profile);
           result.fold(
             (l) => emit(AppDataState.profileNotStored(failure: l)),
             (r) => emit(const AppDataState.profileStored()),
           );
-        } else if (event is DeleteTokenEvent) {
+        } else if (event is _DeleteTokenEvent) {
           emit(const AppDataState.loading());
           final result = await deleteAccessToken(NoParams());
           result.fold(
@@ -62,7 +62,7 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
               const AppDataState.tokenDeleted(),
             ),
           );
-        } else if (event is DeleteProfileEvent) {
+        } else if (event is _DeleteProfileEvent) {
           emit(const AppDataState.loading());
           final result = await deleteProfile(NoParams());
           result.fold(

@@ -3,13 +3,13 @@ part of 'app_data_bloc.dart';
 @freezed
 class AppDataEvent with _$AppDataEvent {
   const factory AppDataEvent.started() = _Started;
-  const factory AppDataEvent.checkIfAuthenticated() = CheckIfAuthenticatedEvent;
-  const factory AppDataEvent.loadProfile() = LoadProfileEvent;
+  const factory AppDataEvent.checkIfAuthenticated() = _CheckIfAuthenticatedEvent;
+  const factory AppDataEvent.loadProfile() = _LoadProfileEvent;
   const factory AppDataEvent.saveToken({required String token}) =
-      SaveTokenEvent;
+      _SaveTokenEvent;
   const factory AppDataEvent.saveProfile({required Profile profile}) =
-      SaveProfileEvent;
+      _SaveProfileEvent;
 
-  const factory AppDataEvent.deleteToken() = DeleteTokenEvent;
-  const factory AppDataEvent.deleteProfile() = DeleteProfileEvent;
+  const factory AppDataEvent.deleteToken() = _DeleteTokenEvent;
+  const factory AppDataEvent.deleteProfile() = _DeleteProfileEvent;
 }

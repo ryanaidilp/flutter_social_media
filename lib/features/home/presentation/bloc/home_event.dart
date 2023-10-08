@@ -6,13 +6,13 @@ class HomeEvent with _$HomeEvent {
   const factory HomeEvent.loadInitialPost({
 
     required int perPage,
-  }) = LoadInitialPostEvent;
+  }) = _LoadInitialPostEvent;
 
    const factory HomeEvent.loadMorePosts({
     required int page,
     required int perPage,
-  }) = LoadMorePostsEvent;
+  }) = _LoadMorePostEvent;
 
-  const factory HomeEvent.update() = PostsUpdatedEvent;
-  const factory HomeEvent.refresh() = PostsRefreshEvent;
+  const factory HomeEvent.update() = _PostUpdatedEvent;
+  const factory HomeEvent.refresh() = _PostRefreshEvent;
 }

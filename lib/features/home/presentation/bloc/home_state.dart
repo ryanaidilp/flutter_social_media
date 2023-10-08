@@ -5,17 +5,17 @@ class HomeState with _$HomeState {
   const factory HomeState.initial() = _Initial;
   const factory HomeState.loadingPosts({
     @Default(1) int nextPage,
-  }) = LoadingPost;
+  }) = HomePostLoading;
   const factory HomeState.loadingPostsFailed({
     required int page,
     required Failure failure,
-  }) = LoadingPostFailed;
+  }) = HomePostFailed;
 
   const factory HomeState.loadingPostsSuccess({
     required int page,
     required GraphQLResponse<List<Post>> data,
-  }) = LoadingPostsSuccess;
+  }) = HomePostSuccess;
 
-  const factory HomeState.update() = PostUpdated;
-  const factory HomeState.refresh() = PostRefreshed;
+  const factory HomeState.update() = HomePostUpdated;
+  const factory HomeState.refresh() = HomePostRefreshed;
 }
