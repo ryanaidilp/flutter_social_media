@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
-import 'package:injectable/injectable.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/failures/failures.dart';
 import 'package:flutter_social/core/network/api_exception.dart';
-import 'package:flutter_social/shared/domain/entities/profile.dart';
-import 'package:flutter_social/shared/domain/repositories/profile_repository.dart';
 import 'package:flutter_social/shared/data/data_sources/profile_local_data_source.dart';
 import 'package:flutter_social/shared/data/data_sources/profile_remote_data_source.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
+import 'package:flutter_social/shared/domain/entities/profile.dart';
+import 'package:flutter_social/shared/domain/repositories/profile_repository.dart';
+import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: ProfileRepository)
 class ProfileRepositoryImpl implements ProfileRepository {

@@ -33,7 +33,9 @@ class AppDataBloc extends Bloc<AppDataEvent, AppDataState> {
           );
         } else if (event is _LoadProfileEvent) {
           emit(const AppDataState.loading());
-          final result = await getProfile(NoParams());
+          final result = await getProfile(
+            GetProfileParam(isUpdated: event.isUpdated),
+          );
 
           result.fold(
             (l) => emit(const AppDataState.unauthenticated()),

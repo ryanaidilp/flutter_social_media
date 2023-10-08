@@ -1,12 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_social/core/failures/failures.dart';
-import 'package:flutter_social/core/use_case/use_case.dart';
 import 'package:flutter_social/shared/data/models/profile_model.dart';
 import 'package:flutter_social/shared/domain/entities/profile.dart';
 import 'package:flutter_social/shared/domain/repositories/profile_repository.dart';
 import 'package:flutter_social/shared/domain/use_case/get_profile.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/test_injection.dart';
@@ -38,7 +37,7 @@ void main() {
             () => mockRepository.getProfile(),
           ).thenAnswer((_) async => Right(profile));
 
-          final result = await usecase(NoParams());
+          final result = await usecase(const GetProfileParam());
 
           expect(result, Right(profile));
           verify(
@@ -54,7 +53,7 @@ void main() {
             () => mockRepository.getProfile(),
           ).thenAnswer((_) async => Left(NotFoundFailure()));
 
-          final result = await usecase(NoParams());
+          final result = await usecase(const GetProfileParam());
 
           expect(result, Left(NotFoundFailure()));
           verify(

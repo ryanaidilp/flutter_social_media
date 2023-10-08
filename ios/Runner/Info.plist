@@ -52,5 +52,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	 <key>NSCameraUsageDescription</key>
+    <string>Bimatarung needs to access camera for scanner feature,</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Bimatarung needs to access to your photo for scanner feature.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>Bimatarung needs to save photo of scan result to your device.</string>
 </dict>
 </plist>

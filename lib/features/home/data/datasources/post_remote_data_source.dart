@@ -1,6 +1,12 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/typedef.dart';
 import 'package:flutter_social/core/graphql/modules/auth_graphql_module.dart';
+import 'package:flutter_social/core/network/api_endpoint.dart';
+import 'package:flutter_social/core/network/http/modules/flutter_social_http_module.dart';
 import 'package:flutter_social/features/home/data/models/post_model.dart';
 import 'package:flutter_social/shared/data/models/graphql_response_model.dart';
 import 'package:flutter_social/shared/data/models/pagination_model.dart';
@@ -17,11 +23,19 @@ abstract class PostRemoteDataSource {
     required int page,
     required int perPage,
   });
+
+  Future<PostModel> createPost({
+    required String userID,
+    required String description,
+    required File image,
+  });
 }
 
 @LazySingleton(as: PostRemoteDataSource)
 class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   final _graphQLAuthModule = getIt<AuthGraphQLModule>();
+
+  final _httpClient = getIt<FlutterSocialHttpModule>();
 
   @override
   Future<GraphQLResponseModel<List<PostModel>>> getAllPosts({
@@ -165,5 +179,32 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
         return json.map((e) => PostModel.fromJson(e as JSON)).toList();
       },
     );
+  }
+
+  @override
+  Future<PostModel> createPost({
+    required String userID,
+    required String description,
+    required File image,
+  }) async {
+    final file = await MultipartFile.fromFile(image.path);
+    final result = await _httpClient.post(
+      ApiEndpoint.createPost(),
+      body: FormData.fromMap(
+        {
+          'user_id': userID,
+          'description': description,
+          'image': file,
+        },
+      ),
+    );
+
+    if (result.containsKey('status') && result['status'] != true) {
+      throw Exception(result['message']);
+    }
+
+    log(result.toString());
+
+    return PostModel.fromJson(result['data'] as JSON);
   }
 }

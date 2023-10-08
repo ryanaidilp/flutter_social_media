@@ -7,7 +7,8 @@ import 'package:flutter_social/shared/domain/use_case/has_access_token.dart';
 
 class FSGuestGuard extends AutoRouteGuard {
   @override
-  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
+  Future<void> onNavigation(
+      NavigationResolver resolver, StackRouter router,) async {
     final hasTokenResult = await getIt<HasAccessToken>().call(NoParams());
 
     await hasTokenResult.fold(
@@ -16,7 +17,7 @@ class FSGuestGuard extends AutoRouteGuard {
         resolver.next();
       },
       (r) async {
-        final result = await getIt<GetProfile>().call(NoParams());
+        final result = await getIt<GetProfile>().call(const GetProfileParam());
         result.fold(
           (l) {
             log('Granted', name: 'RouterGuard: Guest');

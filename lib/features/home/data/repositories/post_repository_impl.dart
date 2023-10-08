@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/failures/failures.dart';
+import 'package:flutter_social/core/network/api_exception.dart';
 import 'package:flutter_social/features/home/data/datasources/post_remote_data_source.dart';
 import 'package:flutter_social/features/home/data/models/post_model.dart';
 import 'package:flutter_social/features/home/domain/entities/post.dart';
@@ -52,6 +55,27 @@ class PostRepositoryImpl implements PostRepository {
       );
 
       return Right(response);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Post>> createPost({
+    required String userID,
+    required String description,
+    required File image,
+  }) async {
+    try {
+      final result = await _remoteDataSource.createPost(
+        userID: userID,
+        description: description,
+        image: image,
+      );
+
+      return Right(result.toEntity());
+    } on ErrorRequestException catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
     } catch (e) {
       return Left(NetworkFailure(message: e.toString()));
     }

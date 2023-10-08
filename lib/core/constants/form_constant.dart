@@ -8,4 +8,5 @@ class FormConstant {
   static const name = 'name';
   static const password = 'password';
   static const confirmPassword = 'confirm_password';
+  static const description = 'description';
 }

@@ -16,7 +16,7 @@ class FSAuthGuard extends AutoRouteGuard {
         // await router.replace(const LoginRoute());
       },
       (r) async {
-        final result = await getIt<GetProfile>().call(NoParams());
+        final result = await getIt<GetProfile>().call(const GetProfileParam());
         result.fold(
           (l) {
             log('Denied', name: 'RouterGuard: Auth');

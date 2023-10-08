@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_social/features/create_post/presentation/bloc/create_post_bloc.dart';
 import 'package:flutter_social/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_social/features/main/presentation/bloc/main_bloc.dart';
 import 'package:flutter_social/features/profile/presentation/bloc/profile_bloc.dart';
@@ -29,6 +30,9 @@ class MainPage extends StatelessWidget {
               ),
             ),
         ),
+        BlocProvider<CreatePostBloc>(
+          create: (_) => CreatePostBloc(),
+        ),
         BlocProvider<ProfileBloc>(
           create: (_) => ProfileBloc()
             ..add(
@@ -38,7 +42,7 @@ class MainPage extends StatelessWidget {
       ],
       child: AutoTabsRouter.pageView(
         homeIndex: 0,
-        routes: const [HomeRoute(), ProfileRoute()],
+        routes: const [HomeRoute(), CreatePostRoute(), ProfileRoute()],
         builder: (context, child, pageController) {
           final tabRouter = AutoTabsRouter.of(context);
 
@@ -109,6 +113,12 @@ class MainPage extends StatelessWidget {
                       Icons.home,
                     ),
                     label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.edit_document,
+                    ),
+                    label: 'Post',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(
