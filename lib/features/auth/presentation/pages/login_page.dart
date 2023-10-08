@@ -118,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
+                              isDense: true,
                               filled: true,
                               fillColor: Colors.grey.shade200,
                               labelText: 'Email/Username',
@@ -138,6 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: true,
                             decoration: InputDecoration(
+                              isDense: true,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.r),
                               ),
