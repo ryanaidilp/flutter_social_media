@@ -69,4 +69,52 @@ class UserRepositoryImpl implements UserRepository {
       return Left(NetworkFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, ApiResponse<List<User>>>> getFollowers({
+    required String username,
+    int page = 1,
+    int perPage = 10,
+  }) async {
+    try {
+      final result = await _remoteDataSource.getFollowers(
+        username: username,
+        page: page,
+        perPage: perPage,
+      );
+
+      return Right(
+        ApiResponse<List<User>>(
+          pagination: result.pagination?.toEntity(),
+          data: result.data?.map((e) => e.toEntity()).toList(),
+        ),
+      );
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ApiResponse<List<User>>>> getFollowing({
+    required String username,
+    int page = 1,
+    int perPage = 10,
+  }) async {
+    try {
+      final result = await _remoteDataSource.getFollowing(
+        username: username,
+        page: page,
+        perPage: perPage,
+      );
+
+      return Right(
+        ApiResponse<List<User>>(
+          pagination: result.pagination?.toEntity(),
+          data: result.data?.map((e) => e.toEntity()).toList(),
+        ),
+      );
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
 }

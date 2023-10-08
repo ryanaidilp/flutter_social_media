@@ -7,7 +7,10 @@ import 'package:flutter_social/features/home/presentation/pages/home_page.dart';
 import 'package:flutter_social/features/main/presentation/pages/main_page.dart';
 import 'package:flutter_social/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter_social/features/splash/presentation/pages/splash_page.dart';
+import 'package:flutter_social/features/users/domain/entities/follow_argument.dart';
 import 'package:flutter_social/features/users/domain/enums/user_action.dart';
+import 'package:flutter_social/features/users/presentation/pages/followers_page.dart';
+import 'package:flutter_social/features/users/presentation/pages/following_page.dart';
 import 'package:flutter_social/features/users/presentation/pages/user_detail_page.dart';
 import 'package:flutter_social/features/users/presentation/pages/user_list_page.dart';
 import 'package:flutter_social/router/guards/fs_auth_guard.dart';
@@ -79,6 +82,20 @@ class FSRouter extends _$FSRouter {
             FSAuthGuard(),
           ],
           path: '/user-detail',
+        ),
+        AutoRoute(
+          page: FollowersRoute.page,
+          guards: [
+            FSAuthGuard(),
+          ],
+          path: '/followers',
+        ),
+        AutoRoute(
+          page: FollowingRoute.page,
+          guards: [
+            FSAuthGuard(),
+          ],
+          path: '/following',
         ),
       ];
 }

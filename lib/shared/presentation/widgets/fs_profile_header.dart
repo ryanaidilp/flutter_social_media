@@ -16,6 +16,8 @@ class FSProfileHeader extends StatelessWidget {
     this.isFollower = false,
     this.showAction = false,
     this.isFollowing = false,
+    this.onFollowersTap,
+    this.onFollowingTap,
     this.onAction,
     super.key,
   })  : name = name ?? '',
@@ -35,6 +37,8 @@ class FSProfileHeader extends StatelessWidget {
   final bool isFollowing;
   final bool isFollower;
   final GestureTapCallback? onAction;
+  final GestureTapCallback? onFollowingTap;
+  final GestureTapCallback? onFollowersTap;
 
   @override
   Widget build(BuildContext context) {
@@ -83,35 +87,41 @@ class FSProfileHeader extends StatelessWidget {
             4.horizontalSpace,
             Expanded(
               flex: 2,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    followerCount.toString(),
-                    style: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
+              child: InkWell(
+                onTap: onFollowersTap,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      followerCount.toString(),
+                      style: textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  4.verticalSpace,
-                  const Skeleton.keep(child: Text('Followers')),
-                ],
+                    4.verticalSpace,
+                    const Skeleton.keep(child: Text('Followers')),
+                  ],
+                ),
               ),
             ),
             4.horizontalSpace,
             Expanded(
               flex: 2,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    followingCount.toString(),
-                    style: textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.w600,
+              child: InkWell(
+                onTap: onFollowingTap,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      followingCount.toString(),
+                      style: textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  4.verticalSpace,
-                  const Skeleton.keep(child: Text('Followings')),
-                ],
+                    4.verticalSpace,
+                    const Skeleton.keep(child: Text('Followings')),
+                  ],
+                ),
               ),
             ),
           ],

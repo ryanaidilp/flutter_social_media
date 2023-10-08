@@ -8,6 +8,16 @@ abstract class UserRepository {
     int page = 1,
     int perPage = 10,
   });
+  Future<Either<Failure, ApiResponse<List<User>>>> getFollowers({
+    required String username,
+    int page = 1,
+    int perPage = 10,
+  });
+  Future<Either<Failure, ApiResponse<List<User>>>> getFollowing({
+    required String username,
+    int page = 1,
+    int perPage = 10,
+  });
 
   Future<Either<Failure, User>> getUserDetail(String username);
   Future<Either<Failure, bool>> follow(String username);

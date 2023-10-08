@@ -13,6 +13,16 @@ abstract class UserRemoteDataSource {
     required int page,
     required int perPage,
   });
+  Future<ApiResponseModel<List<UserModel>>> getFollowers({
+    required String username,
+    required int page,
+    required int perPage,
+  });
+  Future<ApiResponseModel<List<UserModel>>> getFollowing({
+    required String username,
+    required int page,
+    required int perPage,
+  });
 
   Future<UserModel> getUserDetail(String username);
   Future<bool> follow(String username);
@@ -126,5 +136,83 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     return true;
+  }
+
+  @override
+  Future<ApiResponseModel<List<UserModel>>> getFollowers({
+    required String username,
+    required int page,
+    required int perPage,
+  }) async {
+    final result = await _httpClient.get(
+      ApiEndpoint.followers(),
+      param: {
+        'username': username,
+        'page': page,
+        'per_page': perPage,
+      },
+    );
+
+    if (result.containsKey('status') && result['status'] != true) {
+      throw Exception(result['message']);
+    }
+
+    final pagination = result['meta']['pagination'] as JSON;
+    final data = result['data'];
+
+    final json = {
+      'pagination': pagination,
+      'data': data,
+    };
+
+    return ApiResponseModel<List<UserModel>>.fromJson(
+      json,
+      (json) {
+        if (json == null || json is! List) {
+          return [];
+        }
+
+        return json.map((e) => UserModel.fromJson(e as JSON)).toList();
+      },
+    );
+  }
+
+  @override
+  Future<ApiResponseModel<List<UserModel>>> getFollowing({
+    required String username,
+    required int page,
+    required int perPage,
+  }) async {
+    final result = await _httpClient.get(
+      ApiEndpoint.followings(),
+      param: {
+        'username': username,
+        'page': page,
+        'per_page': perPage,
+      },
+    );
+
+    if (result.containsKey('status') && result['status'] != true) {
+      throw Exception(result['message']);
+    }
+
+    final pagination = result['meta']['pagination'] as JSON;
+    final data = result['data'];
+
+    final json = {
+      'pagination': pagination,
+      'data': data,
+    };
+
+    return ApiResponseModel<List<UserModel>>.fromJson(
+      json,
+      (json) {
+        if (json == null || json is! List) {
+          return [];
+        }
+
+        return json.map((e) => UserModel.fromJson(e as JSON)).toList();
+      },
+    );
   }
 }
