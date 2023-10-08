@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:flutter_social/features/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter_social/features/main/presentation/bloc/main_bloc.dart';
 import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/bloc/app_data_bloc.dart';
@@ -17,6 +18,14 @@ class MainPage extends StatelessWidget {
       providers: [
         BlocProvider<MainBloc>(
           create: (_) => getIt<MainBloc>(),
+        ),
+        BlocProvider<HomeBloc>(
+          create: (_) => getIt<HomeBloc>()
+            ..add(
+              const HomeEvent.loadInitialPost(
+                perPage: 10,
+              ),
+            ),
         ),
       ],
       child: AutoTabsRouter.pageView(

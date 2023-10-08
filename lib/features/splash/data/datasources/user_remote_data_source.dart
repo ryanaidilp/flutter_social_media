@@ -14,8 +14,7 @@ abstract class UserRemoteDataSource {
 
 @LazySingleton(as: UserRemoteDataSource)
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final _graphQLModule =
-      getIt<PublicGraphQLModule>();
+  final _graphQLModule = getIt<PublicGraphQLModule>();
 
   @override
   Future<List<UserModel>> getAllUsers({
@@ -44,6 +43,9 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
                 name
                 username
                 email
+                followers_count
+                following_count
+                post_count
                 photo
               }
 

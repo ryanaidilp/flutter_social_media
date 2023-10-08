@@ -23,9 +23,12 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
             profile{
               id
               name
-              email
-              photo
               username
+              email
+              followers_count
+              following_count
+              post_count
+              photo
             }
           }
         '''),

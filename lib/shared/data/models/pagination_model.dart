@@ -7,11 +7,11 @@ part 'pagination_model.g.dart';
 @freezed
 abstract class PaginationModel with _$PaginationModel {
   factory PaginationModel({
-    required int total,
-    required int currentPage,
-    required int perPage,
-    required int lastPage,
-    required bool hasMorePages,
+    @JsonKey(name: 'total') required int total,
+    @JsonKey(name: 'currentPage') required int currentPage,
+    @JsonKey(name: 'perPage') required int perPage,
+    @JsonKey(name: 'lastPage') required int lastPage,
+    @JsonKey(name: 'hasMorePages') required bool hasMorePages,
   }) = _PaginationModel;
   factory PaginationModel.fromJson(Map<String, dynamic> json) =>
       _$PaginationModelFromJson(json);

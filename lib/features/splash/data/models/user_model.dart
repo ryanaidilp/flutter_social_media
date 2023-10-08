@@ -11,6 +11,9 @@ abstract class UserModel with _$UserModel {
     @JsonKey() required String name,
     @JsonKey() required String username,
     @JsonKey() required String email,
+    @JsonKey(name: 'post_count') required int postCount,
+    @JsonKey(name: 'following_count') required int followingCount,
+    @JsonKey(name: 'followers_count') required int followersCount,
     @JsonKey() String? photo,
   }) = _UserModel;
   factory UserModel.fromJson(Map<String, dynamic> json) =>
@@ -19,9 +22,13 @@ abstract class UserModel with _$UserModel {
 
 extension UserModelX on UserModel {
   User toEntity() => User(
-        id: id,
+         id: id,
         name: name,
-        username: username,
         email: email,
+        photo: photo,
+        username: username,
+        postCount: postCount,
+        followersCount: followersCount,
+        followingCount: followingCount,
       );
 }

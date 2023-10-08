@@ -1,6 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:flutter_social/core/failures/failures.dart';
 import 'package:flutter_social/core/network/api_exception.dart';
 import 'package:flutter_social/shared/data/data_sources/profile_local_data_source.dart';
@@ -9,6 +7,8 @@ import 'package:flutter_social/shared/data/models/profile_model.dart';
 import 'package:flutter_social/shared/data/repositories/profile_repository_impl.dart';
 import 'package:flutter_social/shared/domain/entities/profile.dart';
 import 'package:flutter_social/shared/domain/repositories/profile_repository.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures/fixtures.dart';
 import '../../../../helpers/test_injection.dart';
@@ -40,6 +40,9 @@ void main() {
         name: profile.name,
         email: 'newemail@mail.com',
         username: 'newusername',
+        postCount: 0,
+        followersCount: 0,
+        followingCount: 0,
       );
     },
   );
