@@ -47,7 +47,7 @@ dependencies:
   markdown_editor_plus: ^0.2.13
   package_info_plus: ^4.0.2
   path_provider: ^2.0.15
-  permission_handler: ^10.4.3
+  permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
   rate_limiter: ^1.0.0
   reactive_forms: ^16.1.0
