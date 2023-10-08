@@ -1,0 +1,12 @@
+{
+    "jsonapi": {
+        "version": "1.0"
+    },
+    "data": {
+        "id": "82970f4c-13b7-3bd9-a7ce-a8553c73ba6b",
+        "name": "Dr. Jose Berge II",
+        "photo": null,
+        "username": "username",
+        "email": "rempel.jordi@example.org"
+    }
+}
