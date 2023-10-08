@@ -43,7 +43,7 @@ dependencies:
   intl: ^0.18.0
   json_annotation: ^4.8.1
   keyboard_attachable: ^2.1.0
-  logger: ^1.4.0
+  logger: ^2.0.2+1
   markdown_editor_plus: ^0.2.13
   package_info_plus: ^4.0.2
   path_provider: ^2.0.15
