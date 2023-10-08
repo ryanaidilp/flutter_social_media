@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 } else if (state is LoginSuccess) {
                   context.read<AppDataBloc>().add(
-                        SaveTokenEvent(token: state.token),
+                        AppDataEvent.saveToken(token: state.token),
                       );
                 }
               },
@@ -81,11 +81,11 @@ class _LoginPageState extends State<LoginPage> {
                   );
                 } else if (state is AppDataTokenStored) {
                   context.read<AppDataBloc>().add(
-                        const LoadProfileEvent(),
+                        const AppDataEvent.loadProfile(),
                       );
                 } else if (state is AppDataProfileLoaded) {
                   EasyLoading.dismiss();
-                  getIt<FSRouter>().replace(MainRoute());
+                  getIt<FSRouter>().replace(const MainRoute());
                 }
               },
             ),

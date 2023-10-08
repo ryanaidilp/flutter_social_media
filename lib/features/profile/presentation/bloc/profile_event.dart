@@ -1,8 +1,15 @@
 part of 'profile_bloc.dart';
 
-abstract class ProfileEvent extends Equatable {
-  const ProfileEvent();
+@freezed
+class ProfileEvent with _$ProfileEvent {
+  const factory ProfileEvent.started() = _Started;
+  const factory ProfileEvent.loadInitialPosts({@Default(10) int perPage}) =
+      _LoadInitialPosts;
+  const factory ProfileEvent.loadMorePosts({
+    @Default(10) int perPage,
+    @Default(1) int page,
+  }) = _LoadMorePosts;
 
-  @override
-  List<Object> get props => [];
+  const factory ProfileEvent.update() = _PostsUpdatedEvent;
+  const factory ProfileEvent.refresh() = _PostsRefreshEvent;
 }

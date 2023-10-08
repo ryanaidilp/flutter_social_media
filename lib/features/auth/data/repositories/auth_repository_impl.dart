@@ -12,8 +12,9 @@ class AuthRepositoryImpl implements AuthRepository {
   final _remoteDataSource = getIt<AuthRemoteDataSource>();
 
   @override
-  Future<Either<Failure, bool>> checkUsernameAvailability(
-      {required String username,}) {
+  Future<Either<Failure, bool>> checkUsernameAvailability({
+    required String username,
+  }) {
     // TODO: implement checkUsernameAvailability
     throw UnimplementedError();
   }
@@ -40,14 +41,22 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> logout({required String id}) {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> logout({required String id}) async {
+    try {
+      final result = await _remoteDataSource.logout(id);
+
+      return Right(result);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
   }
 
   @override
-  Future<Either<Failure, Profile>> register(
-      {required String name, required String email, required String username,}) {
+  Future<Either<Failure, Profile>> register({
+    required String name,
+    required String email,
+    required String username,
+  }) {
     // TODO: implement register
     throw UnimplementedError();
   }

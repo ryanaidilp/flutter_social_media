@@ -6,6 +6,9 @@ class Profile extends Equatable {
     required this.name,
     required this.email,
     required this.username,
+    required this.postCount,
+    required this.followersCount,
+    required this.followingCount,
     this.photo,
   });
   final String id;
@@ -13,6 +16,9 @@ class Profile extends Equatable {
   final String? photo;
   final String email;
   final String username;
+  final int postCount;
+  final int followersCount;
+  final int followingCount;
 
   @override
   List<Object?> get props {
@@ -22,6 +28,9 @@ class Profile extends Equatable {
       photo,
       email,
       username,
+      postCount,
+      followersCount,
+      followingCount,
     ];
   }
 }

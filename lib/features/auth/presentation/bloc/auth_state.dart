@@ -6,4 +6,8 @@ class AuthState with _$AuthState {
   const factory AuthState.loggingIn() = LoggingIn;
   const factory AuthState.loginFailed({required Failure failure}) = LoginFailed;
   const factory AuthState.loginSuccess({required String token}) = LoginSuccess;
+
+   const factory AuthState.loggingOut() = LoggingOut;
+  const factory AuthState.logoutFailed({required Failure failure}) = LogoutFailed;
+  const factory AuthState.logoutSuccess() = LogoutSuccess;
 }

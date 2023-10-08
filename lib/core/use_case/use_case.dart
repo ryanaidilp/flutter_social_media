@@ -13,7 +13,6 @@ class NoParams extends Equatable {
 }
 
 class IDParams extends Equatable {
-
   const IDParams({required this.id});
   final String id;
 
@@ -22,10 +21,18 @@ class IDParams extends Equatable {
 }
 
 class UsingQueryParams extends Equatable {
-
   const UsingQueryParams({this.queryParams});
   final Map<String, dynamic>? queryParams;
 
   @override
   List<Object?> get props => [queryParams];
+}
+
+class PaginationParam extends Equatable {
+  const PaginationParam({this.page = 1, this.perPage = 10});
+  final int page;
+  final int perPage;
+
+  @override
+  List<Object?> get props => [page, perPage];
 }

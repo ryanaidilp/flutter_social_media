@@ -11,6 +11,9 @@ abstract class ProfileModel with _$ProfileModel {
     @JsonKey() required String name,
     @JsonKey() required String email,
     @JsonKey() required String username,
+    @JsonKey(name: 'post_count') required int postCount,
+    @JsonKey(name: 'following_count') required int followingCount,
+    @JsonKey(name: 'followers_count') required int followersCount,
     @JsonKey() String? photo,
   }) = _ProfileModel;
 
@@ -23,6 +26,9 @@ abstract class ProfileModel with _$ProfileModel {
         photo: profile.photo,
         email: profile.email,
         username: profile.username,
+        postCount: profile.postCount,
+        followersCount: profile.followersCount,
+        followingCount: profile.followingCount,
       );
 }
 
@@ -31,6 +37,10 @@ extension ProfileModelX on ProfileModel {
         id: id,
         name: name,
         email: email,
+        photo: photo,
         username: username,
+        postCount: postCount,
+        followersCount: followersCount,
+        followingCount: followingCount,
       );
 }
