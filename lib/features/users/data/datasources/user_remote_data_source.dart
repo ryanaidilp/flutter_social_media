@@ -15,6 +15,8 @@ abstract class UserRemoteDataSource {
   });
 
   Future<UserModel> getUserDetail(String username);
+  Future<bool> follow(String username);
+  Future<bool> unfollow(String username);
 }
 
 @LazySingleton(as: UserRemoteDataSource)
@@ -58,7 +60,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       },
     );
   }
-  
+
   @override
   Future<UserModel> getUserDetail(String username) async {
     final client = await _graphQLModule.client;
@@ -92,5 +94,37 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     }
 
     return UserModel.fromJson(result.data?['user'] as JSON);
+  }
+
+  @override
+  Future<bool> follow(String username) async {
+    final result = await _httpClient.post(
+      ApiEndpoint.follow(),
+      body: {
+        'username': username,
+      },
+    );
+
+    if (result.containsKey('status') && result['status'] != true) {
+      throw Exception(result['message']);
+    }
+
+    return true;
+  }
+
+  @override
+  Future<bool> unfollow(String username) async {
+    final result = await _httpClient.post(
+      ApiEndpoint.unfollow(),
+      body: {
+        'username': username,
+      },
+    );
+
+    if (result.containsKey('status') && result['status'] != true) {
+      throw Exception(result['message']);
+    }
+
+    return true;
   }
 }

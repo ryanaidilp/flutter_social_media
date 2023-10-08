@@ -9,5 +9,7 @@ abstract class UserRepository {
     int perPage = 10,
   });
 
-  Future<Either<Failure,User>> getUserDetail(String username);
+  Future<Either<Failure, User>> getUserDetail(String username);
+  Future<Either<Failure, bool>> follow(String username);
+  Future<Either<Failure, bool>> unfollow(String username);
 }

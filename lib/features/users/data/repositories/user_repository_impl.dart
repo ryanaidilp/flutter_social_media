@@ -47,4 +47,26 @@ class UserRepositoryImpl implements UserRepository {
       return Left(NetworkFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, bool>> follow(String username) async {
+    try {
+      final result = await _remoteDataSource.follow(username);
+
+      return Right(result);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> unfollow(String username) async {
+    try {
+      final result = await _remoteDataSource.unfollow(username);
+
+      return Right(result);
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
 }

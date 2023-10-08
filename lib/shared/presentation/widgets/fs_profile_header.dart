@@ -13,6 +13,10 @@ class FSProfileHeader extends StatelessWidget {
     int? postCount,
     int? followerCount,
     int? followingCount,
+    this.isFollower = false,
+    this.showAction = false,
+    this.isFollowing = false,
+    this.onAction,
     super.key,
   })  : name = name ?? '',
         username = username ?? '',
@@ -27,6 +31,10 @@ class FSProfileHeader extends StatelessWidget {
   final int postCount;
   final int followerCount;
   final int followingCount;
+  final bool showAction;
+  final bool isFollowing;
+  final bool isFollower;
+  final GestureTapCallback? onAction;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +117,21 @@ class FSProfileHeader extends StatelessWidget {
           ],
         ),
         16.verticalSpace,
+        if (showAction) ...[
+          Skeleton.keep(
+            child: SizedBox(
+              width: 0.3.sw,
+              height: 32.h,
+              child: OutlinedButton(
+                onPressed: onAction,
+                child: Text(
+                  isFollowing ? 'Unfollow' : 'Follow',
+                ),
+              ),
+            ),
+          ),
+          16.verticalSpace,
+        ],
         const Divider(),
       ],
     );

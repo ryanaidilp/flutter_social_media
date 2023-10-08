@@ -5,7 +5,9 @@ import 'package:flutter_social/core/di/service_locator.dart';
 import 'package:flutter_social/core/extension/num_x.dart';
 import 'package:flutter_social/core/extension/widget_x.dart';
 import 'package:flutter_social/features/users/domain/entities/user.dart';
+import 'package:flutter_social/features/users/domain/enums/user_action.dart';
 import 'package:flutter_social/features/users/presentation/bloc/user_bloc.dart';
+import 'package:flutter_social/features/users/presentation/bloc/user_follow_bloc.dart';
 import 'package:flutter_social/router/fs_router.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_infinite_scroll.dart';
 import 'package:flutter_social/shared/presentation/widgets/fs_user_card.dart';
@@ -111,11 +113,52 @@ class _UserListPageState extends State<UserListPage> {
           itemBuilder: (context, item, index) {
             final user = item as User?;
             return FsUserCard(
-              onTap: () => getIt<FSRouter>().push(
-                UserDetailRoute(
-                  username: user?.username ?? '',
-                ),
-              ),
+              onTap: () async {
+                final result = await getIt<FSRouter>().push<UserAction?>(
+                  UserDetailRoute(
+                    username: user?.username ?? '',
+                    isFollowing: user?.followedAt != null,
+                  ),
+                );
+
+                if (result == null) {
+                  return;
+                }
+
+                if (context.mounted) {
+                  switch (result) {
+                    case UserAction.follow:
+                      context.read<UserFollowBloc>().add(
+                            UserFollowEvent.follow(
+                              username: user?.username ?? '',
+                            ),
+                          );
+                    case UserAction.unfollow:
+                      context.read<UserFollowBloc>().add(
+                            UserFollowEvent.unfollow(
+                              username: user?.username ?? '',
+                            ),
+                          );
+                    case UserAction.none:
+                      return;
+                  }
+                }
+              },
+              onToggleFollow: () {
+                if (user?.followedAt != null) {
+                  context.read<UserFollowBloc>().add(
+                        UserFollowEvent.unfollow(
+                          username: user?.username ?? '',
+                        ),
+                      );
+                } else {
+                  context.read<UserFollowBloc>().add(
+                        UserFollowEvent.follow(
+                          username: user?.username ?? '',
+                        ),
+                      );
+                }
+              },
               name: user?.name,
               photo: user?.photo,
               username: user?.username,
