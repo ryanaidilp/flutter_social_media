@@ -45,7 +45,7 @@ dependencies:
   keyboard_attachable: ^2.1.0
   logger: ^2.0.2+1
   markdown_editor_plus: ^0.2.13
-  package_info_plus: ^4.0.2
+  package_info_plus: ^5.0.0
   path_provider: ^2.0.15
   permission_handler: ^11.0.1
   pull_to_refresh: ^2.0.0
