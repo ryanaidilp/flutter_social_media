@@ -39,7 +39,7 @@ dependencies:
   graphql_flutter: ^5.2.0-beta.5
   image_picker: ^1.0.4
   infinite_scroll_pagination: ^4.0.0
-  injectable: ^2.1.2
+  injectable: ^2.3.2
   intl: ^0.18.0
   json_annotation: ^4.8.1
   keyboard_attachable: ^2.1.0
